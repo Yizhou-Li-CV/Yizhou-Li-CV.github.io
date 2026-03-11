@@ -1,248 +1,914 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<!-- saved from url=(0026)https://sjtuytc.github.io/ -->
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="keywords" content="Yizhou Li, Tokyo Tech">
-<meta name="description" content="Yizhou Li&#39;s homepage">
-<link rel="stylesheet" href="./resources/jemdoc.css" type="text/css">
-<title>Yizhou Li's Homepage</title>
-<script async="" src="./resources/analytics.js.ダウンロード"></script><script type="text/javascript" async="" src="./resources/ga.js.ダウンロード"></script><script async="" src="./resources/analytics.js(1).ダウンロード"></script><script type="text/javascript" async="" src="./resources/ga.js(1).ダウンロード"></script><script type="text/javascript">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Yizhou Li, Tokyo Tech, Computer Vision, Image Processing">
+    <meta name="description" content="Yizhou Li — Autonomous Driving Engineer at Sony & Sony Honda Mobility. Ph.D. from Tokyo Institute of Technology.">
+    <title>Yizhou Li — Researcher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafafa;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f5f5f7;
+            --border: #e4e4e7;
+            --border-hover: #d4d4d8;
+            --text: #18181b;
+            --text-secondary: #3f3f46;
+            --text-muted: #71717a;
+            --accent: #4f46e5;
+            --accent-glow: rgba(79, 70, 229, 0.12);
+            --accent-soft: rgba(79, 70, 229, 0.06);
+            --gold: #d97706;
+            --gold-soft: rgba(217, 119, 6, 0.08);
+            --green: #059669;
+            --green-soft: rgba(5, 150, 105, 0.08);
+            --venue-color: #4f46e5;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-39824124-1']);
-  _gaq.push(['_trackPageview']);
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-</script>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 17px;
+            overflow-x: hidden;
+        }
+
+        /* ——— Ambient Background ——— */
+        .ambient {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .ambient .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.35;
+            animation: float 20s ease-in-out infinite;
+        }
+        .ambient .orb:nth-child(1) {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+            top: -200px; left: -100px;
+            animation-delay: 0s;
+        }
+        .ambient .orb:nth-child(2) {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            top: 40%; right: -150px;
+            animation-delay: -7s;
+            animation-duration: 25s;
+        }
+        .ambient .orb:nth-child(3) {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+            bottom: -100px; left: 30%;
+            animation-delay: -14s;
+            animation-duration: 22s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        /* ——— Noise Texture ——— */
+        .noise {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.015;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* ——— Main Container ——— */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        /* ——— Navigation ——— */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(250, 250, 250, 0.8);
+            border-bottom: 1px solid rgba(228, 228, 231, 0.8);
+            transition: var(--transition);
+        }
+        nav .nav-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+        nav .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+        nav .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 7px 16px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        nav .nav-links a:hover {
+            color: var(--text);
+            background: rgba(0,0,0,0.04);
+        }
+
+        /* ——— Hero ——— */
+        .hero {
+            padding-top: 140px;
+            padding-bottom: 80px;
+            display: flex;
+            align-items: center;
+            gap: 48px;
+        }
+        .hero-photo {
+            flex-shrink: 0;
+        }
+        .hero-photo img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+            border: 3px solid var(--border);
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .hero-photo img:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(79, 70, 229, 0.15);
+            transform: scale(1.03);
+        }
+        .hero-info h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        .hero-info .subtitle {
+            font-size: 1.25rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        .hero-info .affiliation {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .hero-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .hero-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            background: var(--bg-card);
+        }
+        .hero-links a:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+        }
+        .hero-links a svg {
+            width: 16px; height: 16px;
+        }
+
+        /* ——— Sections ——— */
+        section {
+            margin-bottom: 72px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .section-header .icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .section-header h2 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+
+        /* ——— Bio Section ——— */
+        .bio-text {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            padding: 30px;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+        .bio-text a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: var(--transition);
+        }
+        .bio-text a:hover {
+            border-bottom-color: var(--accent);
+        }
+        .research-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .research-tags span {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            background: var(--accent-soft);
+            color: var(--accent);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        /* ——— Publications ——— */
+        .pub-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .pub-item {
+            padding: 24px 28px;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            position: relative;
+        }
+        .pub-item:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        .pub-item.award {
+            border-color: rgba(245, 158, 11, 0.25);
+        }
+        .pub-item.award:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            box-shadow: 0 4px 30px rgba(245, 158, 11, 0.08);
+        }
+        .pub-title {
+            font-weight: 600;
+            font-size: 1.12rem;
+            color: var(--text);
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        .pub-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .pub-title a:hover {
+            color: var(--accent);
+        }
+        .pub-authors {
+            font-size: 1.02rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        .pub-authors .me {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .pub-venue {
+            font-size: 1rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .pub-venue .venue-name {
+            font-weight: 700;
+            color: var(--accent);
+            padding: 3px 12px;
+            border-radius: 5px;
+            background: var(--accent-soft);
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+        }
+        .pub-award-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            background: var(--gold-soft);
+            color: var(--gold);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        /* ——— Awards & Scholarships ——— */
+        .awards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .award-card {
+            padding: 20px 22px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .award-card:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
+        .award-card .year {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--gold);
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .award-card .award-name {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.5;
+        }
+        .award-card .award-name .award-highlight {
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        /* ——— Experience / Timeline ——— */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+            padding-left: 28px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), var(--border));
+            border-radius: 1px;
+        }
+        .timeline-item {
+            position: relative;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .timeline-item:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 26px;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg-card);
+            box-shadow: 0 0 0 2px var(--accent);
+            z-index: 1;
+        }
+        .timeline-item .role {
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+        .timeline-item .org {
+            color: var(--accent);
+            font-size: 1.05rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .timeline-item .org:hover { opacity: 0.8; }
+        .timeline-item .period {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            margin-bottom: 8px;
+        }
+        .timeline-item .detail {
+            font-size: 1.02rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .timeline-item .detail a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--text-muted);
+        }
+
+        /* ——— Service ——— */
+        .service-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .service-item {
+            padding: 14px 20px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        .service-item:hover {
+            border-color: var(--border-hover);
+        }
+        .service-item .journal {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .service-item .journal .journal-name {
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .service-item .service-year {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        /* ——— Footer ——— */
+        footer {
+            padding: 40px 0 60px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ——— Scroll Animations ——— */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ——— Responsive ——— */
+        @media (max-width: 700px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                gap: 28px;
+                padding-top: 110px;
+                padding-bottom: 50px;
+            }
+            .hero-info h1 { font-size: 2rem; }
+            .hero-links { justify-content: center; }
+            .awards-grid { grid-template-columns: 1fr; }
+            nav .nav-links a { padding: 6px 10px; font-size: 0.8rem; }
+            .hero-photo img { width: 140px; height: 140px; }
+            .research-tags { justify-content: center; }
+        }
+    </style>
 </head>
-<body data-new-gr-c-s-check-loaded="14.1031.0" data-gr-ext-installed="">
+<body>
+    <!-- Ambient glow background -->
+    <div class="ambient">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+    <div class="noise"></div>
 
-<div id="layout-content" style="margin-top:25px">
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-inner">
+            <span class="logo">Y. Li</span>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#education">Education</a>
+                <a href="#publications">Papers</a>
+                <a href="#awards">Awards</a>
+                <a href="#service">Service</a>
+            </div>
+        </div>
+    </nav>
 
-<table>
-	<tbody>
-		<tr>
-			<td width="570">
-				<div id="toptitle">
-<!--					<h1>Yizhou Li &nbsp; <img src="./resources/name_chs_zelin.png" height="50px" style="margin-left:3px; margin-bottom:-15px"></h1><h1>-->
-					<h1>Yizhou Li &nbsp; </h1><h1>
+    <div class="container">
 
-				</h1></div>
+        <!-- Hero -->
+        <header class="hero fade-up">
+            <div class="hero-photo">
+                <img src="./resources/personal_image.jpg" alt="Yizhou Li">
+            </div>
+            <div class="hero-info">
+                <h1>Yizhou Li</h1>
+                <div class="subtitle">Autonomous Driving Engineer @ Sony &amp; Sony Honda Mobility</div>
+                <div class="affiliation">
+                    Ph.D., Tokyo Institute of Technology<br>
+                    yli [at] ok.sc.e.titech.ac.jp
+                </div>
+                <div class="hero-links">
+                    <a href="https://www.linkedin.com/in/yizhou-li-978682210?originalSubdomain=jp">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="https://scholar.google.com/citations?hl=en&user=zcKv1JQAAAAJ&hl=en">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                        Google Scholar
+                    </a>
+                    <a href="http://www.ok.sc.e.titech.ac.jp/">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        Lab Page
+                    </a>
+                </div>
+            </div>
+        </header>
 
-				<h3>Ph.D. Candidate</h3>
-				<p>System and Control Engineering Department<br>
-					Tokyo Institute of Technology
-					<br>
-					Email: yli [at] ok.sc.e.titech.ac.jp
-					<br>
-					[<a href="https://scholar.google.com/citations?hl=en&user=zcKv1JQAAAAJ&amp;hl=en">Google Scholar</a>] |
-					[<a href="http://www.ok.sc.e.titech.ac.jp/">Lab</a>]
-<!--					[<a href="https://www.zhihu.com/people/zhao-ytc">Zhihu</a>]-->
-				</p>
-				
-			</td>
-			<td>
-				<img src="./resources/personal_image.jpg" border="0" height="250"><br>
-			</td>
-		</tr><tr>
-	</tr></tbody>
-</table>
+        <!-- About -->
+        <section id="about" class="fade-up">
+            <div class="section-header">
+                <div class="icon" style="background: var(--accent-soft); color: var(--accent);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <h2>About</h2>
+            </div>
+            <div class="bio-text">
+                <p>I currently work at <a href="https://www.sony.com/">Sony</a> and <a href="https://www.shm-afeela.com/">Sony Honda Mobility</a> on the AFEELA autonomous driving platform, focusing on perception, end-to-end planning, and photorealistic closed-loop simulation.</p>
+                <p style="margin-top: 12px;">I received my Ph.D. from the <a href="https://educ.titech.ac.jp/sc/eng/">SCE Department of Tokyo Tech</a>, supervised by <a href="http://www.ok.sc.e.titech.ac.jp/mem/mxo/okutomi.html">Prof. Masatoshi Okutomi</a> and <a href="http://www.ok.sc.e.titech.ac.jp/~ymonno/">Prof. Yusuke Monno</a>. Prior to that, I received my M.E. from the same department and my B.E. in CS from <a href="https://en.scu.edu.cn/">Sichuan University</a>.</p>
+                <div class="research-tags">
+                    <span>Autonomous Driving</span>
+                    <span>Computer Vision</span>
+                    <span>Image Processing</span>
+                    <span>Low-Level Vision</span>
+                    <span>3D Reconstruction</span>
+                </div>
+            </div>
+        </section>
 
-<h2>Biography</h2>
-<p>
-	I started my Ph.D. life in the <a href="https://educ.titech.ac.jp/sc/eng/">SCE Department of Tokyo Tech</a> in 2021 Fall</a>.
-	My supervisor is <a href="http://www.ok.sc.e.titech.ac.jp/mem/mxo/okutomi.html">Prof. Masatoshi Okutomi</a>, and I also work with <a href="http://www.ok.sc.e.titech.ac.jp/~ymonno/">Prof. Yusuke Monno</a>.
-	Prior to that, I received M.E. degree in the same department of Tokyo Tech in 2021 Fall (GPA 3.50/4), and B.E. degree in CS Department from <a href="https://en.scu.edu.cn/">SCU</a> in 2019 Fall (GPA 3.57/4).
-</p>
-<p>My research is in computer vision and image processing. I am particularly interested in low-level vision and 3D reconstruction.</p>
+        <!-- Experience -->
+        <section id="experience" class="fade-up">
+            <div class="section-header">
+                <div class="icon" style="background: rgba(236, 72, 153, 0.1); color: #ec4899;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </div>
+                <h2>Experience</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="role">Autonomous Driving Engineer</div>
+                    <a class="org" href="https://www.sony.com/">Sony &amp; Sony Honda Mobility (AFEELA)</a>
+                    <div class="period">Oct 2024 — Present</div>
+                    <div class="detail">
+                        Perception, End-to-End Planning, Photorealistic Closed-Loop Simulator
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="role">Visiting Student</div>
+                    <a class="org" href="https://www.cst.cam.ac.uk/">University of Cambridge</a>
+                    <div class="period">Jul 2023 — Oct 2023</div>
+                    <div class="detail">
+                        Advisor: <a href="https://www.cl.cam.ac.uk/~rkm38/">Rafal Mantiuk</a><br>
+                        Self-supervised Depth-from-Defocus and Multi-focus Image Fusion using Differentiable Rendering
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="role">Research Internship</div>
+                    <a class="org" href="https://www.oppo.com/jp/events/jrc/">OPPO Japan Research Center</a>
+                    <div class="period">Mar 2022 — Nov 2022</div>
+                    <div class="detail">
+                        Advisors: <a href="https://jp.linkedin.com/in/tatsuya-baba-85192186">Tatsuya Baba</a>, <a href="https://www.linkedin.com/in/hiroyuki-uchiyama-5b7451129/">Hiroyuki Uchiyama</a>, <a href="https://jp.linkedin.com/in/ahmedboudissa/en">Ahmed Boudissa</a><br>
+                        Generalized Stereo Vision on Smartphone
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="role">R&D Internship</div>
+                    <a class="org" href="https://ir.baidu.com/">Baidu, Inc.</a>
+                    <div class="period">Jan 2018 — May 2018</div>
+                    <div class="detail">
+                        Department of Natural Language Processing<br>
+                        Baidu Map LBS Chatbot
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<h2>Publications</h2>
-<ul>
-	<li>
-		<a href="https://arxiv.org/html/2508.13091v1">DMS:Diffusion-Based Multi-Baseline Stereo Generation for Improving Self-Supervised Depth Estimation</a><br>
-		Zihua Liu, <b>Yizhou Li</b>, Songyan Zhang, Masatoshi Okutomi<br>
-		<em>Advances in Image Manipulation</em> (<b>ICCV workshop</b>), 2025<br>
-	</li>
-	<li>
-		<a href="">TDM: Temporally-Consistent Diffusion Model for All-in-One Real-World Video Restoration</a><br>
-		<b>Yizhou Li</b>, Zihua Liu, Yusuke Monno, Masatoshi Okutomi<br>
-		<em>International Conference on Multimedia Modeling</em> (<b>MMM</b>), 2025<br>
-		<b>Best Student Paper Award.</b><br>
-	</li>
-	<li>
-		<a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10636073">Dual-Pixel Raindrop Removal</a><br>
-		<b>Yizhou Li</b>, Yusuke Monno, Masatoshi Okutomi<br>
-		<em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em> (<b>TPAMI</b>),
-		2024<br>
-	</li>
+        <!-- Education -->
+        <section id="education" class="fade-up">
+            <div class="section-header">
+                <div class="icon" style="background: rgba(14, 165, 233, 0.1); color: #0ea5e9;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.1 2.7 3 6 3s6-1.9 6-3v-5"/></svg>
+                </div>
+                <h2>Education</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="role">Ph.D. in System and Control Engineering</div>
+                    <a class="org" href="https://educ.titech.ac.jp/sc/eng/">Tokyo Institute of Technology</a>
+                    <div class="period">Oct 2021 — Sep 2024</div>
+                    <div class="detail">
+                        Advisors: <a href="http://www.ok.sc.e.titech.ac.jp/mem/mxo/okutomi.html">Prof. Masatoshi Okutomi</a>, <a href="http://www.ok.sc.e.titech.ac.jp/~ymonno/">Prof. Yusuke Monno</a>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="role">M.E. in System and Control Engineering</div>
+                    <a class="org" href="https://educ.titech.ac.jp/sc/eng/">Tokyo Institute of Technology</a>
+                    <div class="period">Oct 2019 — Sep 2021</div>
+                    <div class="detail">
+                        GPA: 3.50 / 4.00
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="role">B.E. in Computer Science</div>
+                    <a class="org" href="https://en.scu.edu.cn/">Sichuan University</a>
+                    <div class="period">Sep 2015 — Jun 2019</div>
+                    <div class="detail">
+                        GPA: 3.57 / 4.00
+                    </div>
+                </div>
+            </div>
+        </section>
 
-	<li>
-	<a href="">Instance-Wise MRI Reconstruction Based on Self-Supervised Implicit Neural Representation</a><br>
-		Songxiao Yang, <b>Yizhou Li</b>, Masatoshi Okutomi<br>
-	<em>The Annual International Conference of the IEEE Engineering in Medicine and Biology Society</em> (<b>EMBC</b>), 2024<br>
-	</li>
-	<li>
-		<a href="">A Light-weight Universal Medical Segmentation Network for Laptops Based on Knowledge Distillation</a><br>
-		Songxiao Yang, <b>Yizhou Li</b>, Ye Chen, Zhuofeng Wu, Masatoshi Okutomi<br>
-		<em>Foundation Models for Medical Vision</em> (<b>CVPR Workshop</b>), 2024<br>
-		<b>Meritorious Winner Award (Top 5).</b><br>
-	</li>
-	<li>
-		<a href="">CFDNet: A Generalizable Foggy Stereo Matching Network with Contrastive Feature Distillation</a><br>
-		Zihua Liu, <b>Yizhou Li</b>, Masatoshi Okutomi<br>
-		<em>IEEE International Conference on Robotics and Automation</em> (<b>ICRA</b>), 2024<br>
-	</li>
-	<li>
-		<a href="">Global Occlusion-Aware Transformer for Robust Stereo Matching</a><br>
-		Zihua Liu, <b>Yizhou Li</b>, Masatoshi Okutomi<br>
-		<em>Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision</em> (<b>WACV</b>), 2024<br>
-	</li>
-	<li>
-		<a href="http://www.ok.sc.e.titech.ac.jp/res/SIR/index.html">Dual-Pixel Raindrop Removal</a><br>
-		<b>Yizhou Li</b>, Yusuke Monno, Masatoshi Okutomi<br>
-		<em>British Machine Vision Conference</em> (<b>BMVC</b>),
-		2022<br>
-		<b>Oral Presentation, rate: 3.1% in all submissions.</b><br>
-	</li>
-	<li>
-		<a href="http://www.ok.sc.e.titech.ac.jp/res/SIR/index.html">Single Image Deraining Network with Rain Embedding Consistency and Layered LSTM</a><br>
-		<b>Yizhou Li</b>, Yusuke Monno, Masatoshi Okutomi<br>
-		<em>Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision</em> (<b>WACV</b>), 2022<br>
-	</li>
+        <!-- Publications -->
+        <section id="publications" class="fade-up">
+            <div class="section-header">
+                <div class="icon" style="background: var(--green-soft); color: var(--green);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <h2>Publications</h2>
+            </div>
+            <div class="pub-list">
 
-	<li>
-		<a href="https://ieeexplore.ieee.org/abstract/document/9511405">Recurrent RLCN-Guided Attention Network for Single Image Deraining</a><br>
-		<b>Yizhou Li</b>, Yusuke Monno, Masatoshi Okutomi<br>
-		<em>The 17th International Conference on Machine Vision and Applications</em> (<b>MVA</b>), 2021<br>
-	</li>
+                <div class="pub-item">
+                    <div class="pub-title"><a href="https://arxiv.org/html/2508.13091v1">DMS: Diffusion-Based Multi-Baseline Stereo Generation for Improving Self-Supervised Depth Estimation</a></div>
+                    <div class="pub-authors">Zihua Liu, <span class="me">Yizhou Li</span>, Songyan Zhang, Masatoshi Okutomi</div>
+                    <div class="pub-venue">Advances in Image Manipulation — <span class="venue-name">ICCV Workshop</span>, 2025</div>
+                </div>
 
-	<li>
-		<a href="https://europepmc.org/article/med/33377348">Advances in the Application of Machine Learning in Maxillofacial Cysts and Tumors</a><br>
-		Hongxiang Mei, Junhao Cheng, <b>Yizhou Li</b>, Huangshui Ma, Kaiwen Zhang, Yuke Shou, Yang Li<br>
-		West China Journal of Stomatology, 2020<br>
-	</li>
+                <div class="pub-item award">
+                    <div class="pub-title"><a href="">TDM: Temporally-Consistent Diffusion Model for All-in-One Real-World Video Restoration</a></div>
+                    <div class="pub-authors"><span class="me">Yizhou Li</span>, Zihua Liu, Yusuke Monno, Masatoshi Okutomi</div>
+                    <div class="pub-venue">International Conference on Multimedia Modeling — <span class="venue-name">MMM</span>, 2025</div>
+                    <div class="pub-award-badge">&#9733; Best Student Paper Award</div>
+                </div>
 
+                <div class="pub-item">
+                    <div class="pub-title"><a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10636073">Dual-Pixel Raindrop Removal</a></div>
+                    <div class="pub-authors"><span class="me">Yizhou Li</span>, Yusuke Monno, Masatoshi Okutomi</div>
+                    <div class="pub-venue">IEEE Transactions on Pattern Analysis and Machine Intelligence — <span class="venue-name">TPAMI</span>, 2024</div>
+                </div>
 
-	<li>
-		<a href="https://ecai2020.eu/papers/27_paper.pdf">Deep Density-aware Count Regressor</a><br>
-		Zhuojun Chen, Junhao Cheng, Yuchen Yuan, Dongping Liao, <b>Yizhou Li</b>, Jiancheng Lv<br>
-		<em>The 24th European Conference on Artificial Intelligence</em> (<b>ECAI</b>), 2020<br>
-	</li>
+                <div class="pub-item">
+                    <div class="pub-title"><a href="">Instance-Wise MRI Reconstruction Based on Self-Supervised Implicit Neural Representation</a></div>
+                    <div class="pub-authors">Songxiao Yang, <span class="me">Yizhou Li</span>, Masatoshi Okutomi</div>
+                    <div class="pub-venue">IEEE Engineering in Medicine and Biology Society — <span class="venue-name">EMBC</span>, 2024</div>
+                </div>
 
-	<li>
-		<a href="https://ieeexplore.ieee.org/abstract/document/8857799">CLPnet: Cleft Lip and Palate Surgery Support with Deep Learning</a><br>
-		<b>Yizhou Li</b>, Junhao Cheng, Hongxiang Mei, Huangshui Ma, Zhuojun Chen, Yang Li<br>
-		<em>The 41st Annual International Conference of the IEEE Engineering in Medicine and Biology Society</em> (<b>EMBC</b>), 2019<br>
-	</li>
+                <div class="pub-item award">
+                    <div class="pub-title"><a href="">A Light-weight Universal Medical Segmentation Network for Laptops Based on Knowledge Distillation</a></div>
+                    <div class="pub-authors">Songxiao Yang, <span class="me">Yizhou Li</span>, Ye Chen, Zhuofeng Wu, Masatoshi Okutomi</div>
+                    <div class="pub-venue">Foundation Models for Medical Vision — <span class="venue-name">CVPR Workshop</span>, 2024</div>
+                    <div class="pub-award-badge">&#9733; Meritorious Winner Award (Top 5)</div>
+                </div>
 
-</ul>
+                <div class="pub-item">
+                    <div class="pub-title"><a href="">CFDNet: A Generalizable Foggy Stereo Matching Network with Contrastive Feature Distillation</a></div>
+                    <div class="pub-authors">Zihua Liu, <span class="me">Yizhou Li</span>, Masatoshi Okutomi</div>
+                    <div class="pub-venue">IEEE International Conference on Robotics and Automation — <span class="venue-name">ICRA</span>, 2024</div>
+                </div>
 
-<!-- <h2>Publications (Submitted)</h2>
-<ul>
-	<li>
-		<a href="">Dual-Pixel Raindrop Removal</a><br>
-		<b>Yizhou Li</b>, Yusuke Monno, Masatoshi Okutomi<br>
-		<em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em> (<b>TPAMI</b>), 2024<br>
-		(Status: Minor Revision, 1st Round Revision)<br>
-	</li>
-</ul> -->
-<!-- 
-<h2>Ongoing Research</h2>
-<ul>
-	<li>
-		<a href="">High-quality Urban Neural Radiance Fields with Monocular Video</a><br>
-		<b>Yizhou Li</b>, Yusuke Monno, Zijie Jiang, Zihua Liu, Masatoshi Okutomi<br>
-		<ul>
-			<li>
-				Contents: To achieve high-quality view synthesis in urban scenes, we require rich training data from various viewpoints, such as BlockNeRF and SUDS. However, collecting such data is cost-prohibitive. We aim to utilize low-cost monocular drive recorder videos to reconstruct high-quality 3D scenes using Neural Radiance Fields (NeRF). Challenges arise due to limited viewing angles, a restricted number of viewpoints for specific objects, and limited distances to all the objects of interest. To address these challenges and improve results, we are considering to introduce noval techniques.
-			</li>
-		</ul>
-	</li>
-	<li>
-		<a href="">Self-supervised Depth-from-Defocus and Multi-focus Image Fusion using Differentiable Rendering</a><br>
-		<b>Yizhou Li</b>, Okutomi Masatoshi, Rafal Mantiuk<br>
-	</li>
-</ul> -->
+                <div class="pub-item">
+                    <div class="pub-title"><a href="">Global Occlusion-Aware Transformer for Robust Stereo Matching</a></div>
+                    <div class="pub-authors">Zihua Liu, <span class="me">Yizhou Li</span>, Masatoshi Okutomi</div>
+                    <div class="pub-venue">IEEE/CVF Winter Conference on Applications of Computer Vision — <span class="venue-name">WACV</span>, 2024</div>
+                </div>
 
-<h2>Awards</h2>
-<table style="border-spacing:2px" width="100%">
-	
-	<tbody><tr><td> <b>Meritorious Winner Award, CVPR 2024: Segment Anything In Medical Images On Laptop </b> </td> <td> 2024 </td></tr>
-		<tr><td> <b>Miura Award, The Japan Society of Mechanical Engineers </b> </td> <td> 2022 </td></tr>
-		<tr><td> <b>Outstanding Graguates, SCU </b> </td> <td> 2019 </td></tr>
-		<tr><td> <b>Microsoft Imagine Cup: National 2nd Prize </b></td> <td> 2018 </td></tr>
-		<tr><td> <b>Undergratuate Training Program for Innovation and Entrepreneurship: National Project </b></td> <td> 2018 </td></tr>
-		<tr><td> <b>Blue Bridge Cup Software Development Competition: National 3rd Prize </b></td> <td> 2017 </td></tr>
-	</tbody>
-</table>
+                <div class="pub-item award">
+                    <div class="pub-title"><a href="http://www.ok.sc.e.titech.ac.jp/res/SIR/index.html">Dual-Pixel Raindrop Removal</a></div>
+                    <div class="pub-authors"><span class="me">Yizhou Li</span>, Yusuke Monno, Masatoshi Okutomi</div>
+                    <div class="pub-venue">British Machine Vision Conference — <span class="venue-name">BMVC</span>, 2022</div>
+                    <div class="pub-award-badge">&#9733; Oral Presentation — 3.1% acceptance rate</div>
+                </div>
 
-<h2>Scholarships</h2>
-<table style="border-spacing:2px" width="100%">
+                <div class="pub-item">
+                    <div class="pub-title"><a href="http://www.ok.sc.e.titech.ac.jp/res/SIR/index.html">Single Image Deraining Network with Rain Embedding Consistency and Layered LSTM</a></div>
+                    <div class="pub-authors"><span class="me">Yizhou Li</span>, Yusuke Monno, Masatoshi Okutomi</div>
+                    <div class="pub-venue">IEEE/CVF Winter Conference on Applications of Computer Vision — <span class="venue-name">WACV</span>, 2022</div>
+                </div>
 
-	<tbody><tr><td> <b>JST Support for Pioneering Research Initialized by the Next Generation </b></td> <td> Sep 2021 - Sep 2024 </td></tr>
-		<tr><td> <b>Moritani Scholarship Foundation Scholarship </b> </td> <td> April 2021- Sep 2021 </td></tr>
-	</tbody>
-</table>
+                <div class="pub-item">
+                    <div class="pub-title"><a href="https://ieeexplore.ieee.org/abstract/document/9511405">Recurrent RLCN-Guided Attention Network for Single Image Deraining</a></div>
+                    <div class="pub-authors"><span class="me">Yizhou Li</span>, Yusuke Monno, Masatoshi Okutomi</div>
+                    <div class="pub-venue">17th International Conference on Machine Vision and Applications — <span class="venue-name">MVA</span>, 2021</div>
+                </div>
 
+                <div class="pub-item">
+                    <div class="pub-title"><a href="https://europepmc.org/article/med/33377348">Advances in the Application of Machine Learning in Maxillofacial Cysts and Tumors</a></div>
+                    <div class="pub-authors">Hongxiang Mei, Junhao Cheng, <span class="me">Yizhou Li</span>, Huangshui Ma, Kaiwen Zhang, Yuke Shou, Yang Li</div>
+                    <div class="pub-venue">West China Journal of Stomatology, 2020</div>
+                </div>
 
-<h2>Experiences</h2>
-<ul>
-	<li>
-		Visiting Student | <a href="https://www.cst.cam.ac.uk/">University of Cambridge</a> | July 2023 – Oct 2023<br>
-		Advisor: <a href="https://www.cl.cam.ac.uk/~rkm38/">Rafal Mantiuk</a><br>
-		Topic: Self-supervised Depth-from-Defocus and Multi-focus Image Fusion using Differentiable Rendering<br>
-		<!-- (Status: research becomes collaborative project with my current supervisor)<br> -->
-	</li>
-	<li>
-		Internship | <a href="https://www.oppo.com/jp/events/jrc/">OPPO Japan Research Center</a> | March 2022 – November 2022<br>
-		Advisor: <a href="https://jp.linkedin.com/in/tatsuya-baba-85192186">Tatsuya Baba</a>, <a href="https://www.linkedin.com/in/hiroyuki-uchiyama-5b7451129/?originalSubdomain=jp">Hiroyuki Uchiyama</a>, <a href="https://jp.linkedin.com/in/ahmedboudissa/en">Ahmed Boudissa</a><br>
-		Topic: Generalized Stereo Vision on Smartphone<br>
-	</li>
-	<li>
-		Internship | <a href="https://ir.baidu.com/">Baidu, Inc.</a> | Jan 2018 – May 2018<br>
-		Position: R&D of Department of Natural Language and Processing<br>
-		Topic: Baidu Map LBS Chatbot<br>
-	</li>
-</ul>
+                <div class="pub-item">
+                    <div class="pub-title"><a href="https://ecai2020.eu/papers/27_paper.pdf">Deep Density-aware Count Regressor</a></div>
+                    <div class="pub-authors">Zhuojun Chen, Junhao Cheng, Yuchen Yuan, Dongping Liao, <span class="me">Yizhou Li</span>, Jiancheng Lv</div>
+                    <div class="pub-venue">24th European Conference on Artificial Intelligence — <span class="venue-name">ECAI</span>, 2020</div>
+                </div>
 
-<h2>Academic Service</h2>
-<table id="Service" border="0" width="100%">
-	<tbody>
-		<tr>
-			<td>Reviewer for the IEEE Transactions on Pattern Analysis and Machine Intelligence </td>
-			<td>2023</td>
-		</tr>
-		<tr>
-			<td>Reviewer for the Pattern Recognition </td>
-			<td>2023</td>
-		</tr>
-		<tr>
-			<td>Reviewer for the IEEE Transactions on Neural Networks and Learning Systems </td>
-			<td>2022</td>
-		</tr>
-		<tr>
-			<td>Reviewer for the IEEE Transactions on Pattern Analysis and Machine Intelligence </td>
-			<td>2022</td>
-		</tr>
-	</tbody>
-</table>
+                <div class="pub-item">
+                    <div class="pub-title"><a href="https://ieeexplore.ieee.org/abstract/document/8857799">CLPnet: Cleft Lip and Palate Surgery Support with Deep Learning</a></div>
+                    <div class="pub-authors"><span class="me">Yizhou Li</span>, Junhao Cheng, Hongxiang Mei, Huangshui Ma, Zhuojun Chen, Yang Li</div>
+                    <div class="pub-venue">41st IEEE Engineering in Medicine and Biology Society — <span class="venue-name">EMBC</span>, 2019</div>
+                </div>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+            </div>
+        </section>
 
-  ga('create', 'UA-88615920-1', 'auto');
-  ga('send', 'pageview');
+        <!-- Awards -->
+        <section id="awards" class="fade-up">
+            <div class="section-header">
+                <div class="icon" style="background: var(--gold-soft); color: var(--gold);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                </div>
+                <h2>Awards</h2>
+            </div>
+            <div class="awards-grid">
+                <div class="award-card">
+                    <div class="year">2024</div>
+                    <div class="award-name"><span class="award-highlight">Meritorious Winner Award</span> — CVPR 2024: Segment Anything In Medical Images On Laptop</div>
+                </div>
+                <div class="award-card">
+                    <div class="year">2022</div>
+                    <div class="award-name"><span class="award-highlight">Miura Award</span> — The Japan Society of Mechanical Engineers</div>
+                </div>
+                <div class="award-card">
+                    <div class="year">2019</div>
+                    <div class="award-name"><span class="award-highlight">Outstanding Graduates</span> — Sichuan University</div>
+                </div>
+                <div class="award-card">
+                    <div class="year">2018</div>
+                    <div class="award-name"><span class="award-highlight">2nd Place, China Finals</span> — Microsoft Imagine Cup</div>
+                </div>
+                <div class="award-card">
+                    <div class="year">2018</div>
+                    <div class="award-name"><span class="award-highlight">National Project Award</span> — Undergraduate Training Program for Innovation and Entrepreneurship</div>
+                </div>
+                <div class="award-card">
+                    <div class="year">2017</div>
+                    <div class="award-name"><span class="award-highlight">3rd Place, China Finals</span> — Blue Bridge Cup Software Development Competition</div>
+                </div>
+            </div>
+        </section>
 
-</script>
+        <!-- Scholarships -->
+        <section class="fade-up">
+            <div class="section-header">
+                <div class="icon" style="background: var(--green-soft); color: var(--green);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.1 2.7 3 6 3s6-1.9 6-3v-5"/></svg>
+                </div>
+                <h2>Scholarships</h2>
+            </div>
+            <div class="awards-grid">
+                <div class="award-card">
+                    <div class="year">Sep 2021 — Sep 2024</div>
+                    <div class="award-name">JST Support for Pioneering Research Initialized by the Next Generation</div>
+                </div>
+                <div class="award-card">
+                    <div class="year">Apr 2021 — Sep 2021</div>
+                    <div class="award-name">Moritani Scholarship Foundation Scholarship</div>
+                </div>
+            </div>
+        </section>
 
-</div>
+        <!-- Academic Service -->
+        <section id="service" class="fade-up">
+            <div class="section-header">
+                <div class="icon" style="background: rgba(14, 165, 233, 0.1); color: #0ea5e9;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <h2>Academic Service</h2>
+            </div>
+            <div class="service-list">
+                <div class="service-item">
+                    <span class="journal">Reviewer — <span class="journal-name">IEEE Transactions on Pattern Analysis and Machine Intelligence</span></span>
+                    <span class="service-year">2022, 2023</span>
+                </div>
+                <div class="service-item">
+                    <span class="journal">Reviewer — <span class="journal-name">Pattern Recognition</span></span>
+                    <span class="service-year">2023</span>
+                </div>
+                <div class="service-item">
+                    <span class="journal">Reviewer — <span class="journal-name">IEEE Transactions on Neural Networks and Learning Systems</span></span>
+                    <span class="service-year">2022</span>
+                </div>
+            </div>
+        </section>
 
-<grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
-</body></html>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            &copy; 2026 Yizhou Li
+        </div>
+    </footer>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
